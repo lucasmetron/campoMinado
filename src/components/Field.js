@@ -2,9 +2,10 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {params} from '../params';
 import Mine from './Mine';
+import Flag from './Flag';
 
 const Field = props => {
-  const {mined, opened, nearMines, exploded} = props;
+  const {mined, opened, nearMines, exploded, flagged} = props;
 
   const styleField = [styles.field];
 
@@ -33,8 +34,12 @@ const Field = props => {
     styleField.push(styles.exploded);
   }
 
+  if (flagged) {
+    styleField.push(styles.styleField);
+  }
+
   //esse estilo só vai ser inserido caso nenhum dos estilos acima sejam adicionados
-  if (styleField.length === 1) {
+  if (!opened && !exploded) {
     styleField.push(styles.regular);
   }
 
@@ -45,6 +50,8 @@ const Field = props => {
       )}
 
       {mined && opened && <Mine />}
+
+      {flagged && !opened && <Flag />}
     </TouchableOpacity>
   );
 };
@@ -76,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderColor: 'red',
   },
+  styleField: {},
 });
 
 export default Field;

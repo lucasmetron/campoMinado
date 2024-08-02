@@ -27,6 +27,8 @@ const CampoMinado: React.FC = () => {
       <Field mined />
       <Field mined opened />
       <Field mined opened exploded />
+      <Field flagged />
+      <Field opened flagged />
     </SafeAreaView>
   );
 };
