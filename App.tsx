@@ -1,34 +1,30 @@
-import React from 'react';
-import {SafeAreaView, Text, Dimensions, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView, Text, StyleSheet} from 'react-native';
 
 import {params} from './src/params';
-import Field from './src/components/Field';
+import {createMineBoard} from './src/functions';
+import MineField from './src/components/MineField';
 
 const CampoMinado: React.FC = () => {
+  const [board, setBoard] = useState(createBoard());
+
+  function minesAmount() {
+    const cols = params.getColumnsAmount();
+    const rows = params.getRowsAmount();
+    return Math.ceil(cols * rows * params.difficultLevel);
+  }
+
+  function createBoard() {
+    const cols = params.getColumnsAmount();
+    const rows = params.getRowsAmount();
+    return {
+      board: createMineBoard(rows, cols, minesAmount()),
+    };
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>
-        Colunas{params.getColumnsAmount()} Linhas: {params.getRowsAmount()}
-      </Text>
-
-      <Text>width: {Dimensions.get('window').width}</Text>
-      <Text>height: {Dimensions.get('window').height}</Text>
-      <Text>scale: {Dimensions.get('window').scale}</Text>
-      <Text>fontScale: {Dimensions.get('window').fontScale}</Text>
-
-      <Field />
-      <Field opened />
-      <Field opened nearMines={1} />
-      <Field opened nearMines={2} />
-      <Field opened nearMines={3} />
-      <Field opened nearMines={4} />
-      <Field opened nearMines={5} />
-      <Field opened nearMines={6} />
-      <Field mined />
-      <Field mined opened />
-      <Field mined opened exploded />
-      <Field flagged />
-      <Field opened flagged />
+      <MineField board={board.board} />
     </SafeAreaView>
   );
 };
@@ -36,8 +32,11 @@ const CampoMinado: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-end',
+  },
+  board: {
     alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#AAA',
   },
 });
 
